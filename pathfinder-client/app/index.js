@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, FlatList, Keyboard, StyleSheet} from "react-native";
+import { View, TouchableOpacity, FlatList, Keyboard, StyleSheet } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
+import { DatePickerModal } from 'react-native-paper-dates';
 import axios from 'axios';
 
 const Index = () => {
@@ -56,6 +57,9 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
 
+  const [range, setRange] = useState({ startDate: undefined, endDate: undefined });
+  const [rangeOpen, setRangeOpen] = useState(false);
+
   const fetchCities = async () => {
     if (!query.trim()) {
       return; 
@@ -83,6 +87,18 @@ const Index = () => {
     setCities([]); 
     Keyboard.dismiss();
   };
+
+  const onDismiss = React.useCallback(() => {
+    setRangeOpen(false);
+  }, [setRangeOpen]);
+
+  const onConfirm = React.useCallback(
+    ({ startDate, endDate }) => {
+      setRangeOpen(false);
+      setRange({ startDate, endDate });
+    },
+    [setRangeOpen, setRange]
+  );
 
 
   return (
@@ -115,7 +131,28 @@ const Index = () => {
         />
       )}
 
-      {loading && <ActivityIndicator animating={true} size="large" color="#0000ff"/>}
+      {loading && <ActivityIndicator animating={true} size="large" color={theme.colors.secondary}/>}
+
+
+      {range.startDate !== undefined && range.endDate !== undefined ? Object.values(range).map((date,idx)=> {
+      return (<Text style={[styles.dates, {color: theme.colors.secondary}]} key={idx}>{date.toDateString()}</Text>)}) 
+      : null }
+
+      <Button style={styles.button} onPress={() => setRangeOpen(true)} uppercase={false} mode="outlined">
+          Pick dates
+        </Button>
+        <DatePickerModal
+          disableStatusBarPadding
+          locale="en"
+          mode="range"
+          visible={rangeOpen}
+          onDismiss={onDismiss}
+          startDate={range.startDate}
+          endDate={range.endDate}
+          onConfirm={onConfirm}
+          startYear={2024}
+          endYear={2025}
+        />
 
     </View>
     </PaperProvider>
@@ -138,6 +175,7 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
+    marginBottom: 50,
   },
   flatlist: {
     margin: 10,
@@ -145,6 +183,12 @@ const styles = StyleSheet.create({
   flatlist_text: {
     fontSize: 15,
     marginVertical: 10,
+  },
+  dates: {
+    textAlign: 'center',
+    fontSize: 15,
+    marginVertical: 10,
+    fontWeight: "bold",
   }
 });
 
