@@ -1,12 +1,7 @@
-import React, {useState} from 'react';
-import { MD3DarkTheme as DefaultTheme, BottomNavigation, PaperProvider, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native';
-import Home from './home.js';
-import History from './history.js';
+import React from 'react';
+import { MD3DarkTheme as DefaultTheme, Text, PaperProvider } from 'react-native-paper';
 
-
-
-const Index = () => {
+const History = () => {
 
     const theme = {
         ...DefaultTheme,
@@ -53,31 +48,10 @@ const Index = () => {
           "backdrop": "rgba(44, 50, 42, 0.4)"
         }
     }
-
-    const HomeRoute = () => <Home/>;
-    const HistoryRoute = () => <History/>;
-    
-    const [routes] = useState([
-      { key: 'home', title: 'Home', focusedIcon: 'home', unfocusedIcon: 'home-outline'},
-      { key: 'history', title: 'History', focusedIcon: 'history' },
-    ]);
-
-    const [index, setIndex] = useState(0);
-
-    const renderScene = BottomNavigation.SceneMap({
-      home: HomeRoute,
-      history: HistoryRoute,
-    });
-
+   
     return (<PaperProvider theme={theme}>
-            <SafeAreaView>
-            <BottomNavigation
-              navigationState={{ index, routes }}
-              onIndexChange={setIndex}
-              renderScene={renderScene}
-            />
-            </SafeAreaView>
-            </PaperProvider>)
-    }
+        <Text>I am History</Text>
+    </PaperProvider>)
+}
 
-export default Index;
+export default History;
