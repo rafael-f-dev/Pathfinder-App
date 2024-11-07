@@ -1,6 +1,6 @@
 import React from 'react';
 import { MD3DarkTheme as DefaultTheme, Text, PaperProvider } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, StyleSheet } from 'react-native';
 
 const History = () => {
 
@@ -51,10 +51,18 @@ const History = () => {
     }
    
     return (<PaperProvider theme={theme}>
-            <SafeAreaView style={{flex:1}}>
+            <SafeAreaView style={styles.container}>
               <Text>I am History</Text>
             </SafeAreaView>
             </PaperProvider>)
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
+  }
+});
 
 export default History;

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { MD3DarkTheme as DefaultTheme, BottomNavigation, PaperProvider } from 'react-native-paper';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import Home from './home.js';
 import History from './history.js';
 
@@ -70,7 +70,7 @@ const Index = () => {
     });
 
     return (<PaperProvider theme={theme}>
-            <SafeAreaView style={{flex:1}}>
+            <SafeAreaView style={styles.container}>
             <BottomNavigation
               navigationState={{ index, routes }}
               onIndexChange={setIndex}
@@ -79,5 +79,13 @@ const Index = () => {
             </SafeAreaView>
             </PaperProvider>)
     }
+
+  const styles = StyleSheet.create({
+    container: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
+    }
+  });
 
 export default Index;
