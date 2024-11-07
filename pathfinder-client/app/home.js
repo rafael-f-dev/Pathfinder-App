@@ -129,9 +129,11 @@ const Home = () => {
        name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
        message: `In ${selectedCity} you must see this and that place`,
      };
-     
+
      setOutput(newOutput);
      setTrips(prevTrips => [...prevTrips, newOutput]);
+
+     navigation.navigate('SingleOutput', { output: output });
   }
 
   return (
@@ -186,14 +188,14 @@ const Home = () => {
           endYear={2025}
           presentationStyle='pageSheet'
         />
-        {tripSelected ?
-        <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button> : null}
+
+       {tripSelected ?
+       <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button> : null}
 
     </SafeAreaView>
     </PaperProvider>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
