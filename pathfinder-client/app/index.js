@@ -70,7 +70,7 @@ const Index = () => {
     });
 
     return (<PaperProvider theme={theme}>
-            <SafeAreaView>
+            <SafeAreaView style={{flex:1}}>
             <BottomNavigation
               navigationState={{ index, routes }}
               onIndexChange={setIndex}
