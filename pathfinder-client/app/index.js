@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { MD3DarkTheme as DefaultTheme, BottomNavigation, PaperProvider, Text } from 'react-native-paper';
+import { MD3DarkTheme as DefaultTheme, BottomNavigation, PaperProvider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
 import Home from './home.js';
 import History from './history.js';
