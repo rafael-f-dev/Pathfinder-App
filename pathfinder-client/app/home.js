@@ -2,55 +2,57 @@ import React, { useState } from 'react';
 import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
+import { en, registerTranslation } from 'react-native-paper-dates'
 import axios from 'axios';
+registerTranslation('en', en);
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    "primary": "rgb(130, 219, 126)",
+    "onPrimary": "rgb(0, 57, 10)",
+    "primaryContainer": "rgb(0, 83, 18)",
+    "onPrimaryContainer": "rgb(157, 248, 152)",
+    "secondary": "rgb(186, 204, 179)",
+    "onSecondary": "rgb(37, 52, 35)",
+    "secondaryContainer": "rgb(59, 75, 56)",
+    "onSecondaryContainer": "rgb(213, 232, 206)",
+    "tertiary": "rgb(160, 207, 212)",
+    "onTertiary": "rgb(0, 54, 59)",
+    "tertiaryContainer": "rgb(31, 77, 82)",
+    "onTertiaryContainer": "rgb(188, 235, 240)",
+    "error": "rgb(255, 180, 171)",
+    "onError": "rgb(105, 0, 5)",
+    "errorContainer": "rgb(147, 0, 10)",
+    "onErrorContainer": "rgb(255, 180, 171)",
+    "background": "rgb(26, 28, 25)",
+    "onBackground": "rgb(226, 227, 221)",
+    "surface": "rgb(26, 28, 25)",
+    "onSurface": "rgb(226, 227, 221)",
+    "surfaceVariant": "rgb(66, 73, 64)",
+    "onSurfaceVariant": "rgb(194, 201, 189)",
+    "outline": "rgb(140, 147, 136)",
+    "outlineVariant": "rgb(66, 73, 64)",
+    "shadow": "rgb(0, 0, 0)",
+    "scrim": "rgb(0, 0, 0)",
+    "inverseSurface": "rgb(226, 227, 221)",
+    "inverseOnSurface": "rgb(47, 49, 45)",
+    "inversePrimary": "rgb(16, 109, 32)",
+    "elevation": {
+      "level0": "transparent",
+      "level1": "rgb(31, 38, 30)",
+      "level2": "rgb(34, 43, 33)",
+      "level3": "rgb(37, 49, 36)",
+      "level4": "rgb(39, 51, 37)",
+      "level5": "rgb(41, 55, 39)"
+    },
+    "surfaceDisabled": "rgba(226, 227, 221, 0.12)",
+    "onSurfaceDisabled": "rgba(226, 227, 221, 0.38)",
+    "backdrop": "rgba(44, 50, 42, 0.4)"
+  }
+}
 
 const Home = () => {
-
-  const theme = {
-    ...DefaultTheme,
-    colors: {
-      "primary": "rgb(130, 219, 126)",
-      "onPrimary": "rgb(0, 57, 10)",
-      "primaryContainer": "rgb(0, 83, 18)",
-      "onPrimaryContainer": "rgb(157, 248, 152)",
-      "secondary": "rgb(186, 204, 179)",
-      "onSecondary": "rgb(37, 52, 35)",
-      "secondaryContainer": "rgb(59, 75, 56)",
-      "onSecondaryContainer": "rgb(213, 232, 206)",
-      "tertiary": "rgb(160, 207, 212)",
-      "onTertiary": "rgb(0, 54, 59)",
-      "tertiaryContainer": "rgb(31, 77, 82)",
-      "onTertiaryContainer": "rgb(188, 235, 240)",
-      "error": "rgb(255, 180, 171)",
-      "onError": "rgb(105, 0, 5)",
-      "errorContainer": "rgb(147, 0, 10)",
-      "onErrorContainer": "rgb(255, 180, 171)",
-      "background": "rgb(26, 28, 25)",
-      "onBackground": "rgb(226, 227, 221)",
-      "surface": "rgb(26, 28, 25)",
-      "onSurface": "rgb(226, 227, 221)",
-      "surfaceVariant": "rgb(66, 73, 64)",
-      "onSurfaceVariant": "rgb(194, 201, 189)",
-      "outline": "rgb(140, 147, 136)",
-      "outlineVariant": "rgb(66, 73, 64)",
-      "shadow": "rgb(0, 0, 0)",
-      "scrim": "rgb(0, 0, 0)",
-      "inverseSurface": "rgb(226, 227, 221)",
-      "inverseOnSurface": "rgb(47, 49, 45)",
-      "inversePrimary": "rgb(16, 109, 32)",
-      "elevation": {
-        "level0": "transparent",
-        "level1": "rgb(31, 38, 30)",
-        "level2": "rgb(34, 43, 33)",
-        "level3": "rgb(37, 49, 36)",
-        "level4": "rgb(39, 51, 37)",
-        "level5": "rgb(41, 55, 39)"
-      },
-      "surfaceDisabled": "rgba(226, 227, 221, 0.12)",
-      "onSurfaceDisabled": "rgba(226, 227, 221, 0.38)",
-      "backdrop": "rgba(44, 50, 42, 0.4)"
-    }
-}
 
   const [query, setQuery] = useState('');
   const [cities, setCities] = useState([]);
@@ -59,6 +61,14 @@ const Home = () => {
 
   const [range, setRange] = useState({ startDate: undefined, endDate: undefined });
   const [rangeOpen, setRangeOpen] = useState(false);
+
+
+  const [trips, setTrips] = useState([]);
+  const [output, setOutput] = useState({
+   name:"",
+   message:"",
+  })
+
 
   const fetchCities = async () => {
     if (!query.trim()) {
@@ -75,6 +85,7 @@ const Home = () => {
       setCities([]);
     }
     setLoading(false);
+    Keyboard.dismiss();
   };
 
   const handleChangeText = (text) => {
@@ -83,9 +94,8 @@ const Home = () => {
 
   const handleCitySelect = (city) => {
     setQuery(city.properties.formatted); 
-    setSelectedCity(city); 
+    setSelectedCity(city.properties.formatted); 
     setCities([]); 
-    Keyboard.dismiss();
   };
 
   const onDismiss = React.useCallback(() => {
@@ -99,6 +109,18 @@ const Home = () => {
     },
     [setRangeOpen, setRange]
   );
+
+  const generateTrip = () => {
+     const newStartDate = range.startDate.toDateString();
+     const newEndDate = range.endDate.toDateString();
+
+     const newOutput = {
+       name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
+       message: `In ${selectedCity} you must see this and that place`,
+     }
+     setOutput(newOutput);
+     setTrips(prevTrips => [...prevTrips, newOutput]);
+  }
 
   return (
     <PaperProvider theme={theme}>
@@ -153,10 +175,13 @@ const Home = () => {
           presentationStyle='pageSheet'
         />
 
+        <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button>
+
     </SafeAreaView>
     </PaperProvider>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
