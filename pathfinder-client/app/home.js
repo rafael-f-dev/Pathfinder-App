@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
@@ -54,6 +54,7 @@ const theme = {
 
 const Home = () => {
 
+
   const [query, setQuery] = useState('');
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,6 +63,7 @@ const Home = () => {
   const [range, setRange] = useState({ startDate: undefined, endDate: undefined });
   const [rangeOpen, setRangeOpen] = useState(false);
 
+  const [tripSelected, setTripSelected] = useState(false);
 
   const [trips, setTrips] = useState([]);
   const [output, setOutput] = useState({
@@ -69,6 +71,15 @@ const Home = () => {
    message:"",
   })
 
+  const [showOutput, setShowOutput] = useState(false);
+
+  useEffect(()=>{
+    if (selectedCity !== null && (range.startDate !== undefined && range.endDate !== undefined)) {
+      setTripSelected(true);
+    } else {
+      setTripSelected(false);
+    }
+  },[selectedCity, range])
 
   const fetchCities = async () => {
     if (!query.trim()) {
@@ -117,7 +128,8 @@ const Home = () => {
      const newOutput = {
        name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
        message: `In ${selectedCity} you must see this and that place`,
-     }
+     };
+     
      setOutput(newOutput);
      setTrips(prevTrips => [...prevTrips, newOutput]);
   }
@@ -174,8 +186,8 @@ const Home = () => {
           endYear={2025}
           presentationStyle='pageSheet'
         />
-
-        <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button>
+        {tripSelected ?
+        <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button> : null}
 
     </SafeAreaView>
     </PaperProvider>
