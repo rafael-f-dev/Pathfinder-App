@@ -77,10 +77,10 @@ const Index = () => {
 
     const HistoryRoute = () => <History/>;
 
-    const renderScene = React.useMemo(()=> BottomNavigation.SceneMap({
+    const renderScene = BottomNavigation.SceneMap({
       home: HomeRoute,
       history: HistoryRoute,
-    }),[]);
+    });
 
 
     return (<PaperProvider theme={theme}>
