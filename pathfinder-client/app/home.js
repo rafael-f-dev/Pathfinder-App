@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
-import { en, registerTranslation } from 'react-native-paper-dates'
+import { en, registerTranslation } from 'react-native-paper-dates';
 import axios from 'axios';
 registerTranslation('en', en);
 
@@ -133,7 +133,6 @@ const Home = () => {
      setOutput(newOutput);
      setTrips(prevTrips => [...prevTrips, newOutput]);
 
-     navigation.navigate('SingleOutput', { output: output });
   }
 
   return (

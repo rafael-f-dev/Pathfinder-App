@@ -8,7 +8,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-
 const Index = () => {
 
     const theme = {
@@ -75,7 +74,11 @@ const Index = () => {
       </Stack.Navigator>
     );
 
-    const HistoryRoute = () => <History/>;
+    const HistoryRoute = () => (
+      <Stack.Navigator>
+        <Stack.Screen name="History" component={History} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    );
 
     const renderScene = BottomNavigation.SceneMap({
       home: HomeRoute,
@@ -86,11 +89,11 @@ const Index = () => {
     return (<PaperProvider theme={theme}>
             <NavigationContainer>
             <SafeAreaView style={styles.container}>
-            <BottomNavigation
+            {/*<BottomNavigation
               navigationState={{ index, routes }}
               onIndexChange={setIndex}
               renderScene={renderScene}
-            />
+            />*/}
             </SafeAreaView>
             </NavigationContainer>
             </PaperProvider>)
