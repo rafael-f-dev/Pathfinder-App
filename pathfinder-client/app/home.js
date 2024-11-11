@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView } from "react-native";
+import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView, View } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { en, registerTranslation } from 'react-native-paper-dates';
@@ -132,13 +132,33 @@ const Home = () => {
 
      setOutput(newOutput);
      setTrips(prevTrips => [...prevTrips, newOutput]);
+     setShowOutput(true);
+  }
 
+  const backHomeAndClear = () => {
+    const newOutput2 = {
+      name: "",
+      message: "",
+    };
+
+    const newRange = {
+      startDate: undefined,
+      endDate: undefined,
+    }
+
+    setOutput(newOutput2);
+    setRange(newRange);
+    setShowOutput(false);
+    setSelectedCity(null);
+    setQuery('');
   }
 
   return (
     <PaperProvider theme={theme}>
     <SafeAreaView style={[styles.container, {backgroundColor: theme.colors.background}]}>
 
+      {showOutput === false ? 
+      <View>
       <Text style={[styles.title, {color: theme.colors.secondary}]}>Where to next?</Text>
 
       <Searchbar
@@ -190,7 +210,12 @@ const Home = () => {
 
        {tripSelected ?
        <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button> : null}
-
+       </View>
+       : 
+       <View style={styles.container}>
+       <Text style={styles.title}>Output</Text>
+       <Button style={styles.button} onPress={backHomeAndClear} mode='contained'>Generate New Trip</Button>
+       </View>}
     </SafeAreaView>
     </PaperProvider>
   );
