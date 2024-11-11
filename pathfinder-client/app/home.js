@@ -3,6 +3,7 @@ import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView, View } 
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { en, registerTranslation } from 'react-native-paper-dates';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 registerTranslation('en', en);
 
@@ -213,7 +214,8 @@ const Home = () => {
        </View>
        : 
        <View style={styles.container}>
-       <Text style={styles.title}>Output</Text>
+       <Text style={styles.title}>{output.name}</Text>
+       <Text style={styles.flatlist_text}>{output.message}</Text>
        <Button style={styles.button} onPress={backHomeAndClear} mode='contained'>Generate New Trip</Button>
        </View>}
     </SafeAreaView>
@@ -237,7 +239,8 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
-    marginBottom: 50,
+    marginTop: 20,
+    marginBottom: 30,
   },
   flatlist: {
     margin: 10,
