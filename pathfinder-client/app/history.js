@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { MD3DarkTheme as DefaultTheme, Text, PaperProvider } from 'react-native-paper';
 import { SafeAreaView, StyleSheet } from 'react-native';
 
@@ -49,10 +49,52 @@ const History = () => {
           "backdrop": "rgba(44, 50, 42, 0.4)"
         }
     }
+
+    const [trips, setTrips] = useState([]);
+
+    useEffect(()=>{
+      _retrieveData();
+      
+    },[]);
+
+    const _retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('trips');
+        let bringBackToArray= JSON.parse(value);
+        setTrips([...bringBackToArray]);
+    } catch (error) {
+  
+      }
+    };
+
+    const _storeData = async (value) => {
+      try {
+        await AsyncStorage.setItem('trips', JSON.stringify(value) );
+      } catch (error) {
+  
+      }
+    };
+
+    const removeTrip = (idx) => {
+      const temp = [...trips]
+      temp.splice(idx, 1)
+      setTrips([...temp])
+      _storeData(temp)
+  }
+
+    const showTrips = () => {
+      trips.map((trip, idx) => {
+        return <View key={idx}>
+          <Text>{trip}</Text>
+          <Button onPress={() => removeTrip(idx)}>X</Button>
+        </View>
+      })
+    }
    
     return (<PaperProvider theme={theme}>
             <SafeAreaView style={styles.container}>
-              <Text>I am History</Text>
+              <Text style={styles.title} >I am History</Text>
+              {showTrips()}
             </SafeAreaView>
             </PaperProvider>)
 }
@@ -62,7 +104,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: 'center',
-  }
+  },
+  title: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  button: {
+    margin: 10,
+    marginTop: 20,
+    marginBottom: 30,
+  },
 });
 
 export default History;

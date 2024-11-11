@@ -7,6 +7,7 @@ import History from './history.js';
 
 const Index = () => {
 
+
     const theme = {
         ...DefaultTheme,
         colors: {
@@ -53,6 +54,7 @@ const Index = () => {
         }
     }
 
+
     const [index, setIndex] = useState(0);
 
     const [routes] = useState([
@@ -61,9 +63,9 @@ const Index = () => {
     ]);
 
 
-    const HomeRoute = () => <Home />;
+    const HomeRoute = () => <Home/>;
 
-    const HistoryRoute = () => <History />;
+    const HistoryRoute = () => <History/>;
 
     const renderScene = BottomNavigation.SceneMap({
       home: HomeRoute,

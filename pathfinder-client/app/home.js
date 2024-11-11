@@ -67,6 +67,8 @@ const Home = () => {
   const [tripSelected, setTripSelected] = useState(false);
 
   const [trips, setTrips] = useState([]);
+
+  
   const [output, setOutput] = useState({
    name:"",
    message:"",
@@ -133,7 +135,9 @@ const Home = () => {
 
      setOutput(newOutput);
      setTrips(prevTrips => [...prevTrips, newOutput]);
+     console.log(trips)
      setShowOutput(true);
+     _storeData(newOutput)
   }
 
   const backHomeAndClear = () => {
@@ -153,6 +157,14 @@ const Home = () => {
     setSelectedCity(null);
     setQuery('');
   }
+
+  const _storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('trips', JSON.stringify(value) );
+    } catch (error) {
+
+    }
+  };
 
   return (
     <PaperProvider theme={theme}>
