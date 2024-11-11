@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import { MD3DarkTheme as DefaultTheme, Text, PaperProvider } from 'react-native-paper';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import React, {useEffect, useContext} from 'react';
+import { MD3DarkTheme as DefaultTheme, Text, PaperProvider, Button } from 'react-native-paper';
+import { SafeAreaView, StyleSheet, FlatList, View, StatusBar } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { TripContext } from './tripcontext.js'; 
 
 const History = () => {
 
@@ -50,11 +52,12 @@ const History = () => {
         }
     }
 
-    const [trips, setTrips] = useState([]);
+
+    const { trips, setTrips } = useContext(TripContext);
 
     useEffect(()=>{
       _retrieveData();
-      
+      console.log(trips)
     },[]);
 
     const _retrieveData = async () => {
@@ -82,27 +85,32 @@ const History = () => {
       _storeData(temp)
   }
 
-    const showTrips = () => {
-      trips.map((trip, idx) => {
-        return <View key={idx}>
-          <Text>{trip}</Text>
-          <Button onPress={() => removeTrip(idx)}>X</Button>
-        </View>
-      })
-    }
+  const renderTrip = ({ item, idx }) => (
+    <View style={styles.tripContainer}>
+      <Text>{item.name}</Text>
+      <Button style={styles.button} mode='contained' onPress={() => removeTrip(idx)} />
+    </View>
+  );
    
-    return (<PaperProvider theme={theme}>
+    return (<SafeAreaProvider>
+            <PaperProvider theme={theme}>
             <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
               <Text style={styles.title} >I am History</Text>
-              {showTrips()}
+              <FlatList
+                data={trips}
+                keyExtractor={(item, idx) => idx.toString()}
+                renderItem={renderTrip}
+              />
             </SafeAreaView>
-            </PaperProvider>)
+            </PaperProvider>
+            </SafeAreaProvider>)
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 60,
     justifyContent: 'center',
   },
   title: {
@@ -114,6 +122,12 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 20,
     marginBottom: 30,
+  },
+  tripContainer: {
+    marginBottom: 20,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
 

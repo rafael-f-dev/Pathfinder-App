@@ -3,6 +3,7 @@ import { MD3DarkTheme as DefaultTheme, BottomNavigation, PaperProvider } from 'r
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Home from './home.js';
 import History from './history.js';
+import { TripProvider } from './tripcontext.js';
 
 
 const Index = () => {
@@ -73,6 +74,7 @@ const Index = () => {
     });
 
     return (<PaperProvider theme={theme}>
+            <TripProvider>
             <SafeAreaView style={styles.container}>
             <BottomNavigation
               navigationState={{ index, routes }}
@@ -80,6 +82,7 @@ const Index = () => {
               renderScene={renderScene}
             />
             </SafeAreaView>
+            </TripProvider>
             </PaperProvider>)
     }
 

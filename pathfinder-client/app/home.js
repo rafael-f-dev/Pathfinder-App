@@ -1,10 +1,12 @@
-import React, { useState, useEffect} from 'react';
-import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView, View } from "react-native";
+import React, { useState, useEffect, useContext} from 'react';
+import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView, View, StatusBar } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { en, registerTranslation } from 'react-native-paper-dates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { TripContext } from './tripcontext.js'; 
 registerTranslation('en', en);
 
 const theme = {
@@ -66,7 +68,7 @@ const Home = () => {
 
   const [tripSelected, setTripSelected] = useState(false);
 
-  const [trips, setTrips] = useState([]);
+  const { trips, setTrips } = useContext(TripContext);
 
   
   const [output, setOutput] = useState({
@@ -134,8 +136,7 @@ const Home = () => {
      };
 
      setOutput(newOutput);
-     setTrips(prevTrips => [...prevTrips, newOutput]);
-     console.log(trips)
+     setTrips((prevTrips) => [...prevTrips, newOutput]);
      setShowOutput(true);
      _storeData(newOutput)
   }
@@ -167,9 +168,10 @@ const Home = () => {
   };
 
   return (
+    <SafeAreaProvider>
     <PaperProvider theme={theme}>
     <SafeAreaView style={[styles.container, {backgroundColor: theme.colors.background}]}>
-
+    <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
       {showOutput === false ? 
       <View>
       <Text style={[styles.title, {color: theme.colors.secondary}]}>Where to next?</Text>
@@ -218,7 +220,7 @@ const Home = () => {
           onConfirm={onConfirm}
           startYear={2024}
           endYear={2025}
-          presentationStyle='pageSheet'
+          presentationStyle="pageSheet"
         />
 
        {tripSelected ?
@@ -232,13 +234,14 @@ const Home = () => {
        </View>}
     </SafeAreaView>
     </PaperProvider>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 20,
     justifyContent: 'center',
   },
   title: {
