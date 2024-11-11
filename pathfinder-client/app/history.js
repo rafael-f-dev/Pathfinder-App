@@ -3,6 +3,7 @@ import { MD3DarkTheme as DefaultTheme, Text, PaperProvider, Button } from 'react
 import { SafeAreaView, StyleSheet, FlatList, View, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TripContext } from './tripcontext.js'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const History = () => {
 
@@ -57,7 +58,6 @@ const History = () => {
 
     useEffect(()=>{
       _retrieveData();
-      console.log(trips)
     },[]);
 
     const _retrieveData = async () => {
@@ -66,17 +66,18 @@ const History = () => {
         let bringBackToArray= JSON.parse(value);
         setTrips([...bringBackToArray]);
     } catch (error) {
-  
+       console.log(error);
       }
     };
 
-    const _storeData = async (value) => {
+    const _storeData = async (trips) => {
       try {
-        await AsyncStorage.setItem('trips', JSON.stringify(value) );
+        await AsyncStorage.setItem('trips', JSON.stringify(trips));
       } catch (error) {
-  
+        console.log(error);
       }
     };
+  
 
     const removeTrip = (idx) => {
       const temp = [...trips]

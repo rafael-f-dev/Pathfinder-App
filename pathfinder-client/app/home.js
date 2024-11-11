@@ -84,7 +84,19 @@ const Home = () => {
     } else {
       setTripSelected(false);
     }
+
+    _retrieveData();
   },[selectedCity, range])
+
+  const _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('trips');
+      let bringBackToArray= JSON.parse(value);
+      setTrips([...bringBackToArray]);
+  } catch (error) {
+     console.log(error);
+    }
+  };
 
   const fetchCities = async () => {
     if (!query.trim()) {
@@ -134,11 +146,11 @@ const Home = () => {
        name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
        message: `In ${selectedCity} you must see this and that place`,
      };
-
+     const updatedTrips = [...trips, newOutput];
      setOutput(newOutput);
-     setTrips((prevTrips) => [...prevTrips, newOutput]);
+     setTrips(updatedTrips); 
+     _storeData(updatedTrips);
      setShowOutput(true);
-     _storeData(newOutput)
   }
 
   const backHomeAndClear = () => {
@@ -159,11 +171,11 @@ const Home = () => {
     setQuery('');
   }
 
-  const _storeData = async (value) => {
+  const _storeData = async (trips) => {
     try {
-      await AsyncStorage.setItem('trips', JSON.stringify(value) );
+      await AsyncStorage.setItem('trips', JSON.stringify(trips));
     } catch (error) {
-
+      console.log(error);
     }
   };
 
