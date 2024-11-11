@@ -3,9 +3,6 @@ import { MD3DarkTheme as DefaultTheme, BottomNavigation, PaperProvider } from 'r
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Home from './home.js';
 import History from './history.js';
-import SingleOutput from './singleOutput.js';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const Index = () => {
@@ -63,39 +60,24 @@ const Index = () => {
       { key: 'history', title: 'History', focusedIcon: 'history' },
     ]);
 
-    const Stack = createNativeStackNavigator();
 
-    const HomeRoute = () => (
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
-        <Stack.Screen name="SingleOutput" component={SingleOutput} options={{headerTintColor: '#fff', headerStyle: {
-          backgroundColor:"#202020"
-        }}}/>
-      </Stack.Navigator>
-    );
+    const HomeRoute = () => <Home />;
 
-    const HistoryRoute = () => (
-      <Stack.Navigator>
-        <Stack.Screen name="History" component={History} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    );
+    const HistoryRoute = () => <History />;
 
     const renderScene = BottomNavigation.SceneMap({
       home: HomeRoute,
       history: HistoryRoute,
     });
 
-
     return (<PaperProvider theme={theme}>
-            <NavigationContainer>
             <SafeAreaView style={styles.container}>
-            {/*<BottomNavigation
+            <BottomNavigation
               navigationState={{ index, routes }}
               onIndexChange={setIndex}
               renderScene={renderScene}
-            />*/}
+            />
             </SafeAreaView>
-            </NavigationContainer>
             </PaperProvider>)
     }
 
