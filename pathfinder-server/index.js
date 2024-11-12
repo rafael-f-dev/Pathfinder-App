@@ -24,7 +24,7 @@ app.post('/generate', async (req, res) => {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: 'gpt-4o-mini',
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 100,
+      max_tokens: 2000,
       temperature: 0.7,
     }, {
       headers: {
@@ -32,7 +32,7 @@ app.post('/generate', async (req, res) => {
         'Content-Type': 'application/json',
       },
     });
-
+  
     res.json({ text: response.data.choices[0].message.content });
   } catch (error) {
     console.log('Error calling API:', error);
