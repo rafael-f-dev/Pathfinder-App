@@ -149,7 +149,7 @@ const Home = () => {
      setLoading(true);
     
     try {
-       const response = await axios.post('https://your-backend-url.com/generate', {
+       const response = await axios.post('http://192.168.1.76:4040/generate', {
          prompt: prompt,
        });
 
