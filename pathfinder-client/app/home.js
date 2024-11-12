@@ -70,11 +70,11 @@ const Home = () => {
 
   const { trips, setTrips } = useContext(TripContext);
 
-  
+  const [prompt, setPrompt] = useState('');
   const [output, setOutput] = useState({
    name:"",
    message:"",
-  })
+  });
 
   const [showOutput, setShowOutput] = useState(false);
 
@@ -138,19 +138,38 @@ const Home = () => {
     [setRangeOpen, setRange]
   );
 
-  const generateTrip = () => {
+  const generateTrip = async () => {
      const newStartDate = range.startDate.toDateString();
      const newEndDate = range.endDate.toDateString();
 
-     const newOutput = {
-       name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
-       message: `In ${selectedCity} you must see this and that place`,
-     };
-     const updatedTrips = [...trips, newOutput];
-     setOutput(newOutput);
-     setTrips(updatedTrips); 
-     _storeData(updatedTrips);
-     setShowOutput(true);
+     setPrompt(`Generate an itinerary for a trip to ${selectedCity}, from ${newStartDate} until ${newEndDate},
+                present it in a simple, mobile-friendly way, with functional google maps links to each location.
+                No accomodation suggestions, but present it in the way of a friendly trip planner.`)
+
+     setLoading(true);
+    
+    try {
+       const response = await axios.post('https://your-backend-url.com/generate', {
+         prompt: prompt,
+       });
+
+       const newOutput = {
+        name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
+        message: response.data.text,
+      };
+ 
+      const updatedTrips = [...trips, newOutput];
+ 
+      setOutput(newOutput);
+      setTrips(updatedTrips); 
+      _storeData(updatedTrips);
+      setShowOutput(true);
+       
+     } catch (err) {
+        console.log(err);
+     } finally {
+        setLoading(false);
+     }
   }
 
   const backHomeAndClear = () => {
@@ -169,6 +188,7 @@ const Home = () => {
     setShowOutput(false);
     setSelectedCity(null);
     setQuery('');
+    setPrompt('');
   }
 
   const _storeData = async (trips) => {
