@@ -70,7 +70,6 @@ const Home = () => {
 
   const { trips, setTrips } = useContext(TripContext);
 
-  const [prompt, setPrompt] = useState('');
   const [output, setOutput] = useState({
    name:"",
    message:"",
@@ -142,9 +141,9 @@ const Home = () => {
      const newStartDate = range.startDate.toDateString();
      const newEndDate = range.endDate.toDateString();
 
-     setPrompt(`Generate an itinerary for a trip to ${selectedCity}, from ${newStartDate} until ${newEndDate},
+     const prompt = `Generate an itinerary for a trip to ${selectedCity}, from ${newStartDate} until ${newEndDate},
                 present it in a simple, mobile-friendly way, with functional google maps links to each location.
-                No accomodation suggestions, but present it in the way of a friendly trip planner.`)
+                No accomodation suggestions, but present it in the way of a friendly trip planner.`;
 
      setLoading(true);
     

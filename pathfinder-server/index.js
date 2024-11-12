@@ -22,7 +22,7 @@ app.post('/generate', async (req, res) => {
 
   try {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-      model: 'gpt-4-mini',
+      model: 'gpt-4o-mini',
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 100,
       temperature: 0.7,
@@ -35,7 +35,7 @@ app.post('/generate', async (req, res) => {
 
     res.json({ text: response.data.choices[0].message.content });
   } catch (error) {
-    console.error('Error calling API:', error);
+    console.log('Error calling API:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
