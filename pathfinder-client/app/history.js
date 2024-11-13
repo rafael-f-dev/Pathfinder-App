@@ -97,7 +97,7 @@ const History = () => {
             <PaperProvider theme={theme}>
             <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
-              <Text style={styles.title} >I am History</Text>
+              <Text style={styles.title} >Previous Trips</Text>
               <FlatList
                 data={trips}
                 keyExtractor={(item, idx) => idx.toString()}
