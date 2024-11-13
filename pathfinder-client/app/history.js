@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     marginBottom: 10,
+    color: '#76a04d',
   },
   button: {
     margin: 10,
