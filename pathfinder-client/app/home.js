@@ -205,6 +205,8 @@ const Home = () => {
     <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
       {showOutput === false ? 
       <View>
+      <Text style={styles.appname}>Pathfinder</Text>
+      <Text style={styles.belowname}>Generate your next trip</Text>
       <Text style={[styles.title, {color: theme.colors.secondary}]}>Where to next?</Text>
 
       <Searchbar
@@ -274,6 +276,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+  },
+  appname:{
+    fontSize: 35,
+    textAlign: 'center',
+    color: '#76a04d',
+    fontWeight: 'bold',
+  },
+  belowname: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginBottom: 100,
   },
   title: {
     fontSize: 25,
