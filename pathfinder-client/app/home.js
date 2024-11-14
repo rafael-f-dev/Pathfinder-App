@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { TripContext } from './tripcontext.js';
 import Markdown from 'react-native-markdown-display';
+import {Picker} from '@react-native-picker/picker';
 registerTranslation('en', en);
 
 const theme = {
@@ -68,6 +69,7 @@ const Home = () => {
   const [rangeOpen, setRangeOpen] = useState(false);
 
   const [tripSelected, setTripSelected] = useState(false);
+  const [focus, setFocus] = useState('balanced');
 
   const { trips, setTrips } = useContext(TripContext);
 
@@ -213,7 +215,8 @@ const Home = () => {
       {showOutput === false ? 
       <View>
       <Text style={styles.appname}>Pathfinder</Text>
-      <Text style={styles.belowname}>Generate your next trip</Text>
+      <Text style={[styles.belowname, {color: theme.colors.secondary}]}>Generate your next trip</Text>
+  
       <Text style={[styles.title, {color: theme.colors.secondary}]}>Where to next?</Text>
 
       <Searchbar
@@ -241,12 +244,13 @@ const Home = () => {
       )}
 
       {loading && <ActivityIndicator animating={true} size="large" color={theme.colors.secondary}/>}
+ 
 
       {range.startDate !== undefined && range.endDate !== undefined ? Object.values(range).map((date,idx)=> {
       return (<Text style={[styles.dates, {color: theme.colors.secondary}]} key={idx}>{date.toDateString()}</Text>)}) 
       : null }
 
-      <Button style={styles.button} onPress={() => setRangeOpen(true)} uppercase={false} mode="outlined">
+      <Button style={styles.button} onPress={() => setRangeOpen(true)} uppercase={false} mode="contained">
           Pick dates
         </Button>
         <DatePickerModal
@@ -262,6 +266,21 @@ const Home = () => {
           endYear={2025}
           presentationStyle="pageSheet"
         />
+
+        <Text style={[styles.title, {color: theme.colors.secondary}]}>What should be the focus?</Text>
+        <Picker
+          style={styles.picker}
+          mode='dropdown'
+          dropdownIconColor='#76a04d'
+          selectedValue={focus}
+          onValueChange={(itemValue) =>
+          setFocus(itemValue)
+          }>
+        <Picker.Item style={styles.item} label="Balanced" value="balanced" />
+        <Picker.Item style={styles.item} label="Nature" value="nature" />
+        <Picker.Item style={styles.item} label="Culture" value="culture" />
+        <Picker.Item style={styles.item} label="Gastronomy" value="gastronomy" />
+        </Picker>
 
        {tripSelected ?
        <Button style={styles.button} onPress={generateTrip} mode='contained' >Generate Trip</Button> : null}
@@ -290,7 +309,7 @@ const Home = () => {
         },
         link: {
           color: '#76a04d',
-        }
+        },
         }}>
         {output.message}
        </Markdown>
@@ -307,6 +326,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    flexDirection:'column',
     justifyContent: 'center',
   },
   appname:{
@@ -318,12 +338,14 @@ const styles = StyleSheet.create({
   belowname: {
     fontSize: 25,
     textAlign: 'center',
-    marginBottom: 100,
+    marginBottom: 20,
+    fontStyle: 'italic',
   },
   title: {
     fontSize: 25,
     textAlign: 'center',
     marginBottom: 10,
+    marginTop: 10,
   },
   searchbar: {
     margin: 10,
@@ -345,6 +367,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginVertical: 10,
     fontWeight: "bold",
+  },
+  picker: {
+    margin: 10,
+    color: '#76a04d',
+    fontWeight: 'bold',
+    backgroundColor: '#1d271c',
+  },
+  item: {
+    backgroundColor: '#1d271c',
+    color: '#76a04d'
   },
 });
 
