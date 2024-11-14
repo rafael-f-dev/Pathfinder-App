@@ -305,6 +305,7 @@ const Home = () => {
        <View style={styles.container}>
        <ScrollView 
           contentInsetAdjustmentBehavior="never"
+          indicatorStyle='white'
           style={{height: '100%'}}>
        <Markdown style={{
         body: {

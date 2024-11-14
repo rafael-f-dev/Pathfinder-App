@@ -100,8 +100,10 @@ const History = () => {
    
   const renderTripDetails = (trip) => (
     <ScrollView 
-       contentInsetAdjustmentBehavior="automatic"
-       style={{height: '100%'}}>
+       contentInsetAdjustmentBehavior="never"
+       style={{height: '100%'}}
+       indicatorStyle='white'
+       >
        <Markdown style={{
         body: {
           color: 'white',
