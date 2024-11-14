@@ -90,9 +90,11 @@ const History = () => {
 
   const renderTrip = ({ item }) => (
     <View style={styles.tripContainer}>
-      <Text>{item.name}</Text>
+      <Text style={styles.listText} >{item.name}</Text>
+      <View style={styles.buttonContainer}>
       <Button style={styles.button} mode="contained" onPress={() => setSelectedTrip(item)}>View Itinerary</Button>
       <Button style={styles.button} mode='contained' onPress={() => removeTrip(item.id)}>X</Button>
+      </View>
     </View>
   );
    
@@ -153,10 +155,16 @@ const styles = StyleSheet.create({
     padding: 60,
     justifyContent: 'center',
   },
+  buttonContainer: {
+    flexDirection: 'row',       
+    justifyContent: 'space-between', 
+    alignItems: 'center',        
+    marginTop: 10,
+  },    
   title: {
     fontSize: 25,
     textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 35,
     color: '#76a04d',
   },
   button: {
@@ -170,6 +178,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  listText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    letterSpacing: 1
+  }
 });
 
 export default History;
