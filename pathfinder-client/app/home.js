@@ -74,6 +74,7 @@ const Home = () => {
   const [output, setOutput] = useState({
    name:"",
    message:"",
+   id: "",
   });
 
   const [showOutput, setShowOutput] = useState(false);
@@ -159,8 +160,10 @@ const Home = () => {
        const newOutput = {
         name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
         message: response.data.text,
+        id: response.data.id,
       };
       
+
       const updatedTrips = [...trips, newOutput];
  
       setOutput(newOutput);

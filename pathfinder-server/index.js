@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const port = process.env.PORT;
@@ -32,8 +33,14 @@ app.post('/generate', async (req, res) => {
         'Content-Type': 'application/json',
       },
     });
+
+    const tripId = uuidv4();
   
-    res.json({ text: response.data.choices[0].message.content });
+    res.json({ 
+      id: tripId,
+      text: response.data.choices[0].message.content 
+    });
+    
   } catch (error) {
     console.log('Error calling API:', error);
     res.status(500).json({ error: 'Internal server error.' });

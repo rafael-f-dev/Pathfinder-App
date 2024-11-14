@@ -1,8 +1,9 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import { MD3DarkTheme as DefaultTheme, Text, PaperProvider, Button } from 'react-native-paper';
-import { SafeAreaView, StyleSheet, FlatList, View, StatusBar } from 'react-native';
+import { SafeAreaView, StyleSheet, FlatList, View, StatusBar, ScrollView } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TripContext } from './tripcontext.js'; 
+import Markdown from 'react-native-markdown-display';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const History = () => {
@@ -56,6 +57,8 @@ const History = () => {
 
     const { trips, setTrips } = useContext(TripContext);
 
+    const [selectedTrip, setSelectedTrip] = useState(null);
+
     useEffect(()=>{
       _retrieveData();
     },[]);
@@ -79,30 +82,66 @@ const History = () => {
     };
   
 
-    const removeTrip = (idx) => {
-      const temp = [...trips]
-      temp.splice(idx, 1)
-      setTrips([...temp])
-      _storeData(temp)
-  }
+    const removeTrip = (id) => {
+      const updatedTrips = trips.filter(trip => trip.id !== id);
+      setTrips(updatedTrips);  
+      _storeData(updatedTrips);  
+    }
 
-  const renderTrip = ({ item, idx }) => (
+  const renderTrip = ({ item }) => (
     <View style={styles.tripContainer}>
       <Text>{item.name}</Text>
-      <Button style={styles.button} mode='contained' onPress={() => removeTrip(idx)} />
+      <Button style={styles.button} mode="contained" onPress={() => setSelectedTrip(item)}>View Itinerary</Button>
+      <Button style={styles.button} mode='contained' onPress={() => removeTrip(item.id)}>X</Button>
     </View>
   );
    
+  const renderTripDetails = (trip) => (
+    <ScrollView 
+       contentInsetAdjustmentBehavior="automatic"
+       style={{height: '100%'}}>
+       <Markdown style={{
+        body: {
+          color: 'white',
+        },
+        heading1: {
+          color: 'white', 
+        },
+        heading2: {
+          color: 'white',   
+        },
+        heading3: {
+          color: 'white',  
+        },
+        hr: {
+          backgroundColor: 'white',
+          margin: 15,
+        },
+        link: {
+          color: '#76a04d',
+        }
+        }}>
+       {trip.message}
+       </Markdown>
+      <Button style={styles.button} mode="contained" onPress={() => setSelectedTrip(null)}>
+        Back to List
+      </Button>
+    </ScrollView>
+  );
+
     return (<SafeAreaProvider>
             <PaperProvider theme={theme}>
             <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor={theme.colors.background} />
               <Text style={styles.title} >Previous Trips</Text>
+              {selectedTrip ? (
+                renderTripDetails(selectedTrip)
+              ) : (
               <FlatList
                 data={trips}
-                keyExtractor={(item, idx) => idx.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={renderTrip}
-              />
+              />)}
             </SafeAreaView>
             </PaperProvider>
             </SafeAreaProvider>)
@@ -117,7 +156,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 25,
     color: '#76a04d',
   },
   button: {
