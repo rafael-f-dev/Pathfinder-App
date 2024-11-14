@@ -185,7 +185,6 @@ const Home = () => {
       setTrips(updatedTrips); 
       _storeData(updatedTrips);
       setShowOutput(true);
-      console.log(prompt)
        
      } catch (err) {
         console.log(err);
