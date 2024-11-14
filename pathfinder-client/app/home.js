@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext} from 'react';
-import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView, View, StatusBar } from "react-native";
+import { TouchableOpacity, FlatList, Keyboard, StyleSheet, SafeAreaView, View, StatusBar, ScrollView } from "react-native";
 import { MD3DarkTheme as DefaultTheme, Searchbar, Text, Button, PaperProvider, ActivityIndicator, Divider } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { en, registerTranslation } from 'react-native-paper-dates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { TripContext } from './tripcontext.js'; 
+import { TripContext } from './tripcontext.js';
+import Markdown from 'react-native-markdown-display';
 registerTranslation('en', en);
 
 const theme = {
@@ -142,7 +143,10 @@ const Home = () => {
      const newEndDate = range.endDate.toDateString();
 
      const prompt = `Generate an itinerary for a trip to ${selectedCity}, from ${newStartDate} until ${newEndDate},
-                present it in a simple, mobile-friendly way, with functional google maps links to each location.
+                present it in a simple, mobile-friendly way, with full, functional Google Maps links to each location.
+                The links should be formatted as follows:
+                - If the place name is available, use the link format: https://www.google.com/maps?q=PLACE_NAME
+                - If the place name is not available, use the coordinates link format: https://www.google.com/maps?q=LATITUDE,LONGITUDE
                 No accomodation suggestions, but present it in the way of a friendly trip planner.`;
 
      setLoading(true);
@@ -156,7 +160,7 @@ const Home = () => {
         name: `Trip to ${selectedCity} from ${newStartDate} until ${newEndDate}`,
         message: response.data.text,
       };
- 
+      
       const updatedTrips = [...trips, newOutput];
  
       setOutput(newOutput);
@@ -187,7 +191,6 @@ const Home = () => {
     setShowOutput(false);
     setSelectedCity(null);
     setQuery('');
-    setPrompt('');
   }
 
   const _storeData = async (trips) => {
@@ -197,6 +200,7 @@ const Home = () => {
       console.log(error);
     }
   };
+
 
   return (
     <SafeAreaProvider>
@@ -261,8 +265,33 @@ const Home = () => {
        </View>
        : 
        <View style={styles.container}>
-       <Text style={styles.title}>{output.name}</Text>
-       <Text style={styles.flatlist_text}>{output.message}</Text>
+       <ScrollView 
+          contentInsetAdjustmentBehavior="automatic"
+          style={{height: '100%'}}>
+       <Markdown style={{
+        body: {
+          color: 'white',
+        },
+        heading1: {
+          color: 'white', 
+        },
+        heading2: {
+          color: 'white',   
+        },
+        heading3: {
+          color: 'white',  
+        },
+        hr: {
+          backgroundColor: 'white',
+          margin: 15,
+        },
+        link: {
+          color: '#76a04d',
+        }
+        }}>
+        {output.message}
+       </Markdown>
+       </ScrollView>
        <Button style={styles.button} onPress={backHomeAndClear} mode='contained'>Generate New Trip</Button>
        </View>}
     </SafeAreaView>
@@ -313,7 +342,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginVertical: 10,
     fontWeight: "bold",
-  }
+  },
 });
 
 export default Home;
