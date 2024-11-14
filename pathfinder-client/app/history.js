@@ -93,7 +93,7 @@ const History = () => {
       <Text style={styles.listText} >{item.name}</Text>
       <View style={styles.buttonContainer}>
       <Button style={styles.button} mode="contained" onPress={() => setSelectedTrip(item)}>View Itinerary</Button>
-      <Button style={styles.button} mode='contained' onPress={() => removeTrip(item.id)}>X</Button>
+      <Button style={styles.button} mode='contained' onPress={() => removeTrip(item.id)}>Delete</Button>
       </View>
     </View>
   );
