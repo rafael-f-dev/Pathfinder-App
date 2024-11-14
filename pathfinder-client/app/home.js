@@ -145,11 +145,24 @@ const Home = () => {
      const newStartDate = range.startDate.toDateString();
      const newEndDate = range.endDate.toDateString();
 
+     let phrase = '';
+
+     if (focus === 'balanced') {
+      phrase = 'Present a variety of locations with a balance of culture, gastronomy, nature and more.';
+     } else if ( focus === 'nature') {
+      phrase = 'Present a variety of locations but with a focus on nature related activities.';
+     } else if (focus === 'gastronomy') {
+      phrase = 'Present a variety of locations but with a focus on gastronomy related activities.';
+     } else if (focus === 'culture') {
+      phrase = 'Present a variety of locations but with a focus on culture related activities.';
+     }
+
      const prompt = `Generate an itinerary for a trip to ${selectedCity}, from ${newStartDate} until ${newEndDate},
                 present it in a simple, mobile-friendly way, with full, functional Google Maps links to each location.
                 The links should be formatted as follows:
                 - If the place name is available, use the link format: https://www.google.com/maps?q=PLACE_NAME
                 - If the place name is not available, use the coordinates link format: https://www.google.com/maps?q=LATITUDE,LONGITUDE
+                ${phrase}
                 No accomodation suggestions, but present it in the way of a friendly trip planner.`;
 
      setLoading(true);
@@ -172,6 +185,7 @@ const Home = () => {
       setTrips(updatedTrips); 
       _storeData(updatedTrips);
       setShowOutput(true);
+      console.log(prompt)
        
      } catch (err) {
         console.log(err);
@@ -184,6 +198,7 @@ const Home = () => {
     const newOutput2 = {
       name: "",
       message: "",
+      id: "",
     };
 
     const newRange = {
@@ -195,6 +210,7 @@ const Home = () => {
     setRange(newRange);
     setShowOutput(false);
     setSelectedCity(null);
+    setFocus('balanced');
     setQuery('');
   }
 
