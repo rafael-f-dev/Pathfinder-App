@@ -304,7 +304,7 @@ const Home = () => {
        : 
        <View style={styles.container}>
        <ScrollView 
-          contentInsetAdjustmentBehavior="automatic"
+          contentInsetAdjustmentBehavior="never"
           style={{height: '100%'}}>
        <Markdown style={{
         body: {
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   flatlist: {
     margin: 10,
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
   dates: {
     textAlign: 'center',
     fontSize: 15,
-    marginVertical: 10,
+    marginVertical: 5,
     fontWeight: "bold",
   },
   picker: {
