@@ -9,6 +9,7 @@ import axios from 'axios';
 import { TripContext } from './tripcontext.js';
 import Markdown from 'react-native-markdown-display';
 import {Picker} from '@react-native-picker/picker';
+import { useFonts } from 'expo-font';
 registerTranslation('en', en);
 
 const theme = {
@@ -59,6 +60,9 @@ const theme = {
 
 const Home = () => {
 
+  useFonts({
+    'CroissantOne': require('../assets/fonts/CroissantOne-Regular.ttf'),
+  });
 
   const [query, setQuery] = useState('');
   const [cities, setCities] = useState([]);
@@ -350,6 +354,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#76a04d',
     fontWeight: 'bold',
+    fontFamily: 'CroissantOne',
   },
   belowname: {
     fontSize: 25,
